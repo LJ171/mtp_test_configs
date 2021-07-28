@@ -1,0 +1,8 @@
+model: transr
+ax_search:
+  parameters:
+    # TRANSR
+    - name: transr.l_norm
+      type: choice
+      values: [1., 2.]
+      is_ordered: True
