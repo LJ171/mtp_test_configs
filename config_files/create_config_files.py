@@ -7,7 +7,7 @@ import os
 
 if __name__ == "__main__":
     datasets = ["fb15k-237"]
-    train_types = ["1vsAll", "KvsAll", "negative_sampling"]
+    train_types = ["negative_sampling"]
     template_filename = "template_mtp.yaml"
 
     # parse args
@@ -72,12 +72,12 @@ if __name__ == "__main__":
                 # determine set of loss functions
                 # no margin ranking in all train types
                 if train_type == "KvsAll" or train_type == "1vsAll":
-                    losses = ["bce"]
+                    losses = ["kl"]
                 # no bce in transe
                 elif train_type == "negative_sampling" and model_name == "transe":
                     losses = ["kl"]
                 else:
-                    losses = ["bce"]
+                    losses = ["kl"]
                 for loss in losses:
                     # skip transe if loss = bce
                     if loss == "bce" and model_name == "transe":

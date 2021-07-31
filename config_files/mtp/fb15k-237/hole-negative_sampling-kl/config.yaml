@@ -1,4 +1,4 @@
-# fb15k-237-hole-1vsAll-bce
+# fb15k-237-hole-negative_sampling-kl
 job.type: search
 search.type: ax
 dataset.name: fb15k-237
@@ -48,13 +48,13 @@ ax_search:
       value: 256
     - name: train.type
       type: fixed
-      value: 1vsAll
+      value: negative_sampling
     - name: train.optimizer
       type: choice
       values: [ Adam, Adagrad ]
     - name: train.loss
       type: fixed
-      value: bce
+      value: kl
     - name: train.optimizer_args.lr
       type: range
       bounds: [ 0.0003, 1.0 ]
@@ -128,4 +128,12 @@ ax_search:
       bounds: [ -0.5, 0.5 ]
 
     # training-type specific hyperparameters
+    - name: negative_sampling.num_negatives_s #train_type: negative_sampling
+      type: range                             #train_type: negative_sampling
+      bounds: [ 1, 1000 ]                       #train_type: negative_sampling
+      log_scale: True                         #train_type: negative_sampling
+    - name: negative_sampling.num_negatives_o #train_type: negative_sampling
+      type: range                             #train_type: negative_sampling
+      bounds: [ 1, 1000 ]                       #train_type: negative_sampling
+      log_scale: True                         #train_type: negative_sampling
     # model-specific entries
