@@ -12,7 +12,7 @@ train:
 # TransE due to a pytorch issue) or for larger datasets. Change to spo in such
 # cases (either here or in ax section of model config), results will not be
 # affected.
-negative_sampling.implementation: sp_po
+negative_sampling.implementation: triple
 
 # validation/evaluation settings (fixed)
 valid:
