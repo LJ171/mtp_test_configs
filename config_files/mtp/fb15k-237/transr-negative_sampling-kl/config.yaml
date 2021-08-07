@@ -5,7 +5,7 @@ dataset.name: fb15k-237
 
 # training settings (fixed)
 train:
-  max_epochs: 100
+  max_epochs: 128
   auto_correct: True
 
 # this is faster for smaller datasets, but does not work for some models (e.g.,
@@ -25,7 +25,7 @@ valid:
     threshold.metric_value: 0.05
 
 eval:
-  batch_size: 100
+  batch_size: 128
   metrics_per.relation_type: True
 
 # settings for reciprocal relations (if used)
@@ -45,7 +45,7 @@ ax_search:
     # training hyperparameters
     - name: train.batch_size
       type: fixed
-      value: 100
+      value: 32
     - name: train.type
       type: fixed
       value: negative_sampling
@@ -78,7 +78,7 @@ ax_search:
     # embedding dimension
     - name: lookup_embedder.dim
       type: choice
-      values: [ 128, 256, 512 ]
+      values: 128
       is_ordered: True
 
     # embedding initialization
