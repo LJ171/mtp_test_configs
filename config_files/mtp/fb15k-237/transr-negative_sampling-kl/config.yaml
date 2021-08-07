@@ -78,7 +78,7 @@ ax_search:
     # embedding dimension
     - name: lookup_embedder.dim
       type: fixed
-      values: 128
+      value: 128
 
     # embedding initialization
     - name: lookup_embedder.initialize
