@@ -45,7 +45,7 @@ ax_search:
     # training hyperparameters
     - name: train.batch_size
       type: fixed
-      value: 32
+      value: 128
     - name: train.type
       type: fixed
       value: negative_sampling
@@ -78,7 +78,7 @@ ax_search:
     # embedding dimension
     - name: lookup_embedder.dim
       type: fixed
-      values: 128
+      value: 128
 
     # embedding initialization
     - name: lookup_embedder.initialize
