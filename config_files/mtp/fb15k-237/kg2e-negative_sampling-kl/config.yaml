@@ -137,9 +137,9 @@ ax_search:
       bounds: [ 1, 1000 ]                       #train_type: negative_sampling
       log_scale: True                         #train_type: negative_sampling
     # model-specific entries
-    - name: kg2e.c_min
+    - name: kg2e_embedder.c_min
       type: range
       bounds: [0.01, 0.05]
-    - name: kg2e.c_max
+    - name: kg2e_embedder.c_max
       type: range
       bounds: [1, 5]
