@@ -2,9 +2,9 @@ model: kg2e
 ax_search:
   parameters:
     # KG2E
-    - name: kg2e.c_min
+    - name: kg2e_embedder.c_min
       type: range
       bounds: [ 0.01, 0.05 ]
-    - name: kg2e.c_max
+    - name: kg2e_embedder.c_max
       type: range
       bounds: [ 1, 5 ]
