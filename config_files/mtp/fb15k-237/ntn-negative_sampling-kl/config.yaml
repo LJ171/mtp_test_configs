@@ -29,7 +29,7 @@ eval:
   metrics_per.relation_type: True
 
 # settings for reciprocal relations (if used)
-import: [ntn, reciprocal_relations_model]
+import: [ ntn, reciprocal_relations_model ]
 reciprocal_relations_model.base_model.type: ntn
 
 # ax settings: hyperparameter serach space
@@ -40,7 +40,7 @@ ax_search:
     # model
     - name: model
       type: choice
-      values: [ntn, reciprocal_relations_model]
+      values: [ ntn, reciprocal_relations_model ]
 
     # training hyperparameters
     - name: train.batch_size
@@ -80,8 +80,13 @@ ax_search:
       type: choice
       values: [ 128, 256, 512 ]
       is_ordered: True
+    - name: ntn.relation_embedder.dim
+      type: choice
+      values: [ 2, 4, 8, 16, 32 ]
+      is_ordered: True
 
-    # embedding initialization
+
+      # embedding initialization
     - name: lookup_embedder.initialize
       type: choice
       values: [ xavier_normal_, xavier_uniform_, normal_, uniform_ ]
@@ -139,5 +144,5 @@ ax_search:
     # model-specific entries
     - name: ntn.l_norm
       type: choice
-      values: [1.0, 2.0]
+      values: [ 1.0, 2.0 ]
       is_ordered: True
