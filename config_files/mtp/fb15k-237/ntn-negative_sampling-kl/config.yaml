@@ -1,7 +1,7 @@
 # fb15k-237-ntn-negative_sampling-kl
 job.type: search
 search.type: ax
-dataset.name: fb15k-237
+dataset.name: toy
 
 # training settings (fixed)
 train:
@@ -80,6 +80,12 @@ ax_search:
       type: choice
       values: [ 128, 256, 512 ]
       is_ordered: True
+
+    - name: ntn.relation_embedder.dim
+      type: choice
+      values: [ 2, 4, 8, 16, 32 ]
+      is_ordered: True
+
 
     # embedding initialization
     - name: lookup_embedder.initialize

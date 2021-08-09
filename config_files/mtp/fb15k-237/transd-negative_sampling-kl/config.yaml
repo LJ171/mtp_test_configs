@@ -12,7 +12,7 @@ train:
 # TransE due to a pytorch issue) or for larger datasets. Change to spo in such
 # cases (either here or in ax section of model config), results will not be
 # affected.
-negative_sampling.implementation: triple
+negative_sampling.implementation: sp_po
 
 # validation/evaluation settings (fixed)
 valid:
@@ -25,7 +25,7 @@ valid:
     threshold.metric_value: 0.05
 
 eval:
-  batch_size: 100
+  batch_size: 256
   metrics_per.relation_type: True
 
 # settings for reciprocal relations (if used)
@@ -45,7 +45,7 @@ ax_search:
     # training hyperparameters
     - name: train.batch_size
       type: fixed
-      value: 100
+      value: 256
     - name: train.type
       type: fixed
       value: negative_sampling
@@ -110,52 +110,23 @@ ax_search:
     - name: lookup_embedder.regularize_args.weighted
       type: choice
       values: [ True, False ]
-    - name: transd.entity_embedder.base_embedder.regularize_weight
+    - name: transd.entity_embedder.regularize_weight
       type: range
       bounds: [ 1.0e-20, 1.0e-01 ]
       log_scale: True
-    - name: transd.relation_embedder.base_embedder.regularize_weight
-      type: range
-      bounds: [ 1.0e-20, 1.0e-01 ]
-      log_scale: True
-    - name: transd.entity_embedder.secondary_embedder.regularize_weight
-      type: range
-      bounds: [ 1.0e-20, 1.0e-01 ]
-      log_scale: True
-    - name: transd.relation_embedder.secondary_embedder.regularize_weight
+    - name: transd.relation_embedder.regularize_weight
       type: range
       bounds: [ 1.0e-20, 1.0e-01 ]
       log_scale: True
 
     # embedding dropout
-    - name: transd.entity_embedder.base_embedder.dropout
+    - name: transd.entity_embedder.dropout
       type: range
       bounds: [ -0.5, 0.5 ]
-    - name: transd.relation_embedder.base_embedder.dropout
-      type: range
-      bounds: [ -0.5, 0.5 ]
-    - name: transd.entity_embedder.secondary_embedder.dropout
-      type: range
-      bounds: [ -0.5, 0.5 ]
-    - name: transd.relation_embedder.secondary_embedder.dropout
+    - name: transd.relation_embedder.dropout
       type: range
       bounds: [ -0.5, 0.5 ]
 
-    # training-type specific hyperparameters
-    - name: KvsAll.label_smoothing            #train_type: KvsAll
-      type: range                             #train_type: KvsAll
-      bounds: [ -0.3, 0.3 ]                     #train_type: KvsAll
-
-    # model-specific entries
-    - name: transd.l_norm
-      type: choice
-      values: [ 1.0, 2.0 ]
-      is_ordered: True
-    - name: transd.norm_constraint.p
-      type: choice
-      values: [ -1.0, 2.0 ]
-      is_ordered: True
-      
     # training-type specific hyperparameters
     - name: negative_sampling.num_negatives_s #train_type: negative_sampling
       type: range                             #train_type: negative_sampling
@@ -164,4 +135,9 @@ ax_search:
     - name: negative_sampling.num_negatives_o #train_type: negative_sampling
       type: range                             #train_type: negative_sampling
       bounds: [ 1, 1000 ]                       #train_type: negative_sampling
-      log_scale: True                         #train_type: negative_sampling      
+      log_scale: True                         #train_type: negative_sampling
+    # model-specific entries
+    - name: transd.l_norm
+      type: choice
+      values: [1.0, 2.0]
+      is_ordered: True
