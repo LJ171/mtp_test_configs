@@ -142,7 +142,3 @@ ax_search:
       bounds: [ 1, 1000 ]                       #train_type: negative_sampling
       log_scale: True                         #train_type: negative_sampling
     # model-specific entries
-    - name: ntn.l_norm
-      type: choice
-      values: [ 1.0, 2.0 ]
-      is_ordered: True

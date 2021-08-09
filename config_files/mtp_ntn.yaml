@@ -1,8 +1,1 @@
 model: ntn
-ax_search:
-  parameters:
-    # NTN
-    - name: ntn.l_norm
-      type: choice
-      values: [1., 2.]
-      is_ordered: True
