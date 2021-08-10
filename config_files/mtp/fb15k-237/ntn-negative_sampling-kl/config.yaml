@@ -12,7 +12,7 @@ train:
 # TransE due to a pytorch issue) or for larger datasets. Change to spo in such
 # cases (either here or in ax section of model config), results will not be
 # affected.
-negative_sampling.implementation: sp_po
+negative_sampling.implementation: triple
 
 # validation/evaluation settings (fixed)
 valid:
@@ -25,7 +25,7 @@ valid:
     threshold.metric_value: 0.05
 
 eval:
-  batch_size: 100
+  batch_size: 64
   metrics_per.relation_type: True
 
 # settings for reciprocal relations (if used)
@@ -45,7 +45,7 @@ ax_search:
     # training hyperparameters
     - name: train.batch_size
       type: fixed
-      value: 100
+      value: 64
     - name: train.type
       type: fixed
       value: negative_sampling
