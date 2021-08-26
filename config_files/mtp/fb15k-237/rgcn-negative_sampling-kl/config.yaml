@@ -1,0 +1,210 @@
+# fb15k-237-rgcn-negative_sampling-kl
+job.type: search
+search.type: ax
+dataset.name: fb15k-237
+
+# training settings (fixed)
+train:
+  max_epochs: 100
+  auto_correct: True
+  subbatch_auto_tune: True
+
+entity_ranking:
+  chunk_size: 16
+
+# this is faster for smaller datasets, but does not work for some models (e.g.,
+# TransE due to a pytorch issue) or for larger datasets. Change to spo in such
+# cases (either here or in ax section of model config), results will not be
+# affected.
+negative_sampling.implementation: sp_po
+
+# validation/evaluation settings (fixed)
+valid:
+  every: 5
+  metric: mean_reciprocal_rank_filtered_with_test
+  filter_with_test: True
+  early_stopping:
+    patience: 10
+    threshold.epochs: 50
+    threshold.metric_value: 0.05
+
+eval:
+  batch_size: 256
+  metrics_per.relation_type: True
+
+# settings for reciprocal relations (if used)
+import: [rgcn, reciprocal_relations_model]
+reciprocal_relations_model.base_model.type: rgcn
+
+# ax settings: hyperparameter serach space
+ax_search:
+  num_trials: 15
+  num_sobol_trials: 15
+  parameters:
+    # model
+    - name: model
+      type: choice
+      values: [rgcn, reciprocal_relations_model]
+
+    # training hyperparameters
+    - name: train.batch_size
+      type: fixed
+      value: 256
+    - name: train.type
+      type: fixed
+      value: negative_sampling
+    - name: train.optimizer
+      type: choice
+      values: [ Adam, Adagrad ]
+    - name: train.loss
+      type: fixed
+      value: kl
+    - name: train.optimizer_args.lr
+      type: range
+      bounds: [ 0.0003, 1.0 ]
+      log_scale: True
+    - name: train.lr_scheduler
+      type: fixed
+      value: ReduceLROnPlateau
+    - name: train.lr_scheduler_args.mode
+      type: fixed
+      value: max
+    - name: train.lr_scheduler_args.factor
+      type: fixed
+      value: 0.95
+    - name: train.lr_scheduler_args.threshold
+      type: fixed
+      value: 0.0001
+    - name: train.lr_scheduler_args.patience
+      type: range
+      bounds: [ 0, 10 ]
+
+    # embedding dimension
+    - name: lookup_embedder.dim
+      type: choice
+      values: [ 128, 256, 512 ]
+      is_ordered: True
+
+    # embedding initialization
+    - name: lookup_embedder.initialize
+      type: choice
+      values: [ xavier_normal_, xavier_uniform_, normal_, uniform_ ]
+    - name: lookup_embedder.initialize_args.normal_.mean
+      type: fixed
+      value: 0.0
+    - name: lookup_embedder.initialize_args.normal_.std
+      type: range
+      bounds: [ 0.00001, 1.0 ]
+      log_scale: True
+    - name: lookup_embedder.initialize_args.uniform_.a
+      type: range
+      bounds: [ -1.0, -0.00001 ]
+    - name: lookup_embedder.initialize_args.xavier_uniform_.gain
+      type: fixed
+      value: 1.0
+    - name: lookup_embedder.initialize_args.xavier_normal_.gain
+      type: fixed
+      value: 1.0
+
+    # embedding regularization
+    - name: lookup_embedder.regularize
+      type: choice
+      values: [ '', 'l3', 'l2', 'l1' ]
+      is_ordered: True
+    - name: lookup_embedder.regularize_args.weighted
+      type: choice
+      values: [ True, False ]
+    - name: rgcn.entity_embedder.regularize_weight
+      type: range
+      bounds: [ 1.0e-20, 1.0e-01 ]
+      log_scale: True
+    - name: rgcn.relation_embedder.regularize_weight
+      type: range
+      bounds: [ 1.0e-20, 1.0e-01 ]
+      log_scale: True
+
+    # embedding dropout
+    - name: rgcn.entity_embedder.dropout
+      type: range
+      bounds: [ -0.5, 0.5 ]
+    - name: rgcn.relation_embedder.dropout
+      type: range
+      bounds: [ -0.5, 0.5 ]
+
+    # training-type specific hyperparameters
+    - name: negative_sampling.num_negatives_s #train_type: negative_sampling
+      type: range                             #train_type: negative_sampling
+      bounds: [ 1, 1000 ]                       #train_type: negative_sampling
+      log_scale: True                         #train_type: negative_sampling
+    - name: negative_sampling.num_negatives_o #train_type: negative_sampling
+      type: range                             #train_type: negative_sampling
+      bounds: [ 1, 1000 ]                       #train_type: negative_sampling
+      log_scale: True                         #train_type: negative_sampling
+    # model-specific entries
+    - name: rgcn.decoder.model
+      type: fixed
+      value: distmult
+    - name: rgcn.decoder.scorer
+      type: fixed
+      value: DistMultScorer
+    - name: rgcn_embedder.dim
+      type: choice
+      values: [128, 256, 512]
+      is_ordered: True
+    - name: rgcn_embedder.initialize
+      type: choice
+      values: ['xavier_normal_', 'xavier_uniform_', 'normal_', 'uniform_']
+    - name: rgcn_embedder.initialize_args.normal_.mean
+      type: fixed
+      value: 0.0
+    - name: rgcn_embedder.initialize_args.normal_.std
+      type: range
+      bounds: [1e-05, 1.0]
+      log_scale: True
+    - name: rgcn_embedder.initialize_args.uniform_.a
+      type: range
+      bounds: [-1.0, -1e-05]
+    - name: rgcn_embedder.initialize_args.xavier_uniform_.gain
+      type: fixed
+      value: 1.0
+    - name: rgcn_embedder.initialize_args.xavier_normal_.gain
+      type: fixed
+      value: 1.0
+    - name: rgcn_embedder.edge_dropout
+      type: range
+      bounds: [-0.5, 0.5]
+    - name: rgcn_embedder.self_loop_dropout
+      type: range
+      bounds: [-0.5, 0.5]
+    - name: rgcn_embedder.self_loop_dropout
+      type: choice
+      values: ['bases', 'block']
+    - name: rgcn_embedder.num_bases_or_blocks
+      type: choice
+      values: [2, 4, 8, 16]
+      is_ordered: True
+    - name: rgcn_embedder.num_layers
+      type: choice
+      values: [2, 4, 8, 16]
+      is_ordered: True
+    - name: rgcn_embedder.normalization
+      type: choice
+      values: [True, False]
+    - name: rgcn_embedder.regularize
+      type: choice
+      values: ['', 'l3', 'l2', 'l1']
+      is_ordered: True
+    - name: rgcn_embedder.regularize_args.weighted
+      type: choice
+      values: [True, False]
+    - name: ntn.entity_embedder.regularize_weight
+      type: range
+      bounds: [1e-20, 0.1]
+      log_scale: True
+    - name: ntn.relation_embedder.regularize_weight
+      type: range
+      bounds: [1e-20, 0.1]
+      log_scale: True
+    - name: rgcn_embedder.normalization
+      type: choice
+      values: ['relu', 'tanh', 'softmax']
