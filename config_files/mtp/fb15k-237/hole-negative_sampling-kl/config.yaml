@@ -45,7 +45,7 @@ ax_search:
     # training hyperparameters
     - name: train.batch_size
       type: fixed
-      value: 100
+      value: 64
     - name: train.type
       type: fixed
       value: negative_sampling
