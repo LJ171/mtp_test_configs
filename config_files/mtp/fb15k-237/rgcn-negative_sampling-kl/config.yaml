@@ -197,6 +197,6 @@ ax_search:
     - name: rgcn_embedder.regularize_args.weighted
       type: choice
       values: [True, False]
-    - name: rgcn_embedder.normalization
+    - name: rgcn_embedder.activation_function
       type: choice
       values: ['relu', 'tanh', 'softmax']
