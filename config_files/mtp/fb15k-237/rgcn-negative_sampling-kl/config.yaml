@@ -120,9 +120,6 @@ ax_search:
       log_scale: True
 
     # embedding dropout
-    - name: rgcn.entity_embedder.dropout
-      type: range
-      bounds: [ -0.5, 0.5 ]
     - name: rgcn.relation_embedder.dropout
       type: range
       bounds: [ -0.5, 0.5 ]
