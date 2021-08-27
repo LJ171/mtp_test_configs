@@ -140,10 +140,6 @@ ax_search:
     - name: rgcn.decoder.scorer
       type: fixed
       value: DistMultScorer
-    - name: rgcn_embedder.dim
-      type: choice
-      values: [128, 256, 512]
-      is_ordered: True
     - name: rgcn_embedder.initialize
       type: choice
       values: ['xavier_normal_', 'xavier_uniform_', 'normal_', 'uniform_']
