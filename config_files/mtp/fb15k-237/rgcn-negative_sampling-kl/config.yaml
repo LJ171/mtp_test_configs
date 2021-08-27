@@ -176,7 +176,7 @@ ax_search:
     - name: rgcn_embedder.self_loop_dropout
       type: range
       bounds: [-0.5, 0.5]
-    - name: rgcn_embedder.self_loop_dropout
+    - name: rgcn_embedder.decomposition
       type: choice
       values: ['bases', 'block']
     - name: rgcn_embedder.num_bases_or_blocks
@@ -197,14 +197,6 @@ ax_search:
     - name: rgcn_embedder.regularize_args.weighted
       type: choice
       values: [True, False]
-    - name: ntn.entity_embedder.regularize_weight
-      type: range
-      bounds: [0.00000000000000000001, 0.1]
-      log_scale: True
-    - name: ntn.relation_embedder.regularize_weight
-      type: range
-      bounds: [0.00000000000000000001, 0.1]
-      log_scale: True
     - name: rgcn_embedder.normalization
       type: choice
       values: ['relu', 'tanh', 'softmax']
