@@ -7,12 +7,16 @@ dataset.name: fb15k-237
 train:
   max_epochs: 100
   auto_correct: True
+  subbatch_auto_tune: True
+
+entity_ranking:
+  chunk_size: 16
 
 # this is faster for smaller datasets, but does not work for some models (e.g.,
 # TransE due to a pytorch issue) or for larger datasets. Change to spo in such
 # cases (either here or in ax section of model config), results will not be
 # affected.
-negative_sampling.implementation: triple
+negative_sampling.implementation: sp_po
 
 # validation/evaluation settings (fixed)
 valid:
@@ -25,7 +29,7 @@ valid:
     threshold.metric_value: 0.05
 
 eval:
-  batch_size: 100
+  batch_size: 256
   metrics_per.relation_type: True
 
 # settings for reciprocal relations (if used)
@@ -45,7 +49,7 @@ ax_search:
     # training hyperparameters
     - name: train.batch_size
       type: fixed
-      value: 100
+      value: 256
     - name: train.type
       type: fixed
       value: negative_sampling
@@ -77,8 +81,9 @@ ax_search:
 
     # embedding dimension
     - name: lookup_embedder.dim
-      type: fixed
-      value: 128
+      type: choice
+      values: [ 128, 256, 512 ]
+      is_ordered: True
 
     # embedding initialization
     - name: lookup_embedder.initialize
@@ -140,7 +145,3 @@ ax_search:
       type: choice
       values: [1.0, 2.0]
       is_ordered: True
-    - name: transr.enforce_constraints
-      type: choice
-      values: [True, False]
-      is_ordered: False
