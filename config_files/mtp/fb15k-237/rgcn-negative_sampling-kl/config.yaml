@@ -187,7 +187,7 @@ ax_search:
       type: choice
       values: [2, 4, 8, 16]
       is_ordered: True
-    - name: rgcn_embedder.normalization
+    - name: rgcn_embedder.use_normalization
       type: choice
       values: [True, False]
     - name: rgcn_embedder.regularize_args.weighted
