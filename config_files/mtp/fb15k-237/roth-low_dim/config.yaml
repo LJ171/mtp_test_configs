@@ -7,12 +7,13 @@ dataset.name: fb15k-237
 train:
   max_epochs: 100
   auto_correct: True
+  subbatch_auto_tune: True
 
 # this is faster for smaller datasets, but does not work for some models (e.g.,
 # TransE due to a pytorch issue) or for larger datasets. Change to spo in such
 # cases (either here or in ax section of model config), results will not be
 # affected.
-negative_sampling.implementation: sp_po
+negative_sampling.implementation: triple
 
 # validation/evaluation settings (fixed)
 valid:
@@ -77,9 +78,8 @@ ax_search:
 
     # embedding dimension
     - name: lookup_embedder.dim
-      type: choice
-      values: [ 128, 256, 512 ]
-      is_ordered: True
+      type: fixed
+      value: 32
 
     # embedding initialization
     - name: lookup_embedder.initialize
