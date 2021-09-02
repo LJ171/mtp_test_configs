@@ -10,7 +10,7 @@ train:
   subbatch_auto_tune: True
 
 entity_ranking:
-  chunk_size: 16
+  chunk_size: 128
 
 # this is faster for smaller datasets, but does not work for some models (e.g.,
 # TransE due to a pytorch issue) or for larger datasets. Change to spo in such
@@ -170,11 +170,11 @@ ax_search:
       values: ['bases', 'block']
     - name: rgcn_embedder.num_bases_or_blocks
       type: choice
-      values: [2, 4, 8, 16]
+      values: [2, 4, 6]
       is_ordered: True
     - name: rgcn_embedder.num_layers
       type: choice
-      values: [2, 4, 8, 16]
+      values: [2, 3, 4]
       is_ordered: True
     - name: rgcn_embedder.use_normalization
       type: choice
@@ -184,4 +184,4 @@ ax_search:
       values: [True, False]
     - name: rgcn_embedder.activation_function
       type: choice
-      values: ['relu', 'tanh', 'softmax']
+      values: ['relu']
