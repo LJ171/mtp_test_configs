@@ -5,14 +5,15 @@ dataset.name: fb15k-237
 
 # training settings (fixed)
 train:
-  max_epochs: 100
+  max_epochs: 200
   auto_correct: True
+  subbatch_auto_tune: True
 
 # this is faster for smaller datasets, but does not work for some models (e.g.,
 # TransE due to a pytorch issue) or for larger datasets. Change to spo in such
 # cases (either here or in ax section of model config), results will not be
 # affected.
-negative_sampling.implementation: sp_po
+negative_sampling.implementation: triple
 
 # validation/evaluation settings (fixed)
 valid:
@@ -34,8 +35,8 @@ reciprocal_relations_model.base_model.type: roth
 
 # ax settings: hyperparameter serach space
 ax_search:
-  num_trials: 15
-  num_sobol_trials: 15
+  num_trials: 30
+  num_sobol_trials: 30
   parameters:
     # model
     - name: model
