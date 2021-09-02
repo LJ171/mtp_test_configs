@@ -82,7 +82,7 @@ ax_search:
     # embedding dimension
     - name: lookup_embedder.dim
       type: choice
-      values: [ 128, 256, 512 ]
+      values: [ 64, 128, 256]
       is_ordered: True
 
     # embedding initialization
@@ -174,7 +174,7 @@ ax_search:
       is_ordered: True
     - name: rgcn_embedder.num_layers
       type: choice
-      values: [2, 3, 4]
+      values: [1, 2, 3]
       is_ordered: True
     - name: rgcn_embedder.use_normalization
       type: choice
