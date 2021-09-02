@@ -183,5 +183,5 @@ ax_search:
       type: choice
       values: [True, False]
     - name: rgcn_embedder.activation_function
-      type: choice
+      type: fixed
       values: ['relu']
