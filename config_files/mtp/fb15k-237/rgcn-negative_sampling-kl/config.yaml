@@ -170,7 +170,7 @@ ax_search:
       values: ['bases', 'block']
     - name: rgcn_embedder.num_bases_or_blocks
       type: choice
-      values: [2, 4, 6]
+      values: [2, 4, 8]
       is_ordered: True
     - name: rgcn_embedder.num_layers
       type: choice
