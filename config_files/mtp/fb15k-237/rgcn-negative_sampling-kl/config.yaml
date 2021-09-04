@@ -16,7 +16,7 @@ entity_ranking:
 # TransE due to a pytorch issue) or for larger datasets. Change to spo in such
 # cases (either here or in ax section of model config), results will not be
 # affected.
-negative_sampling.implementation: sp_po
+negative_sampling.implementation: triple
 
 # validation/evaluation settings (fixed)
 valid:
@@ -127,11 +127,11 @@ ax_search:
     # training-type specific hyperparameters
     - name: negative_sampling.num_negatives_s #train_type: negative_sampling
       type: range                             #train_type: negative_sampling
-      bounds: [ 1, 1000 ]                       #train_type: negative_sampling
+      bounds: [ 1, 500 ]                       #train_type: negative_sampling
       log_scale: True                         #train_type: negative_sampling
     - name: negative_sampling.num_negatives_o #train_type: negative_sampling
       type: range                             #train_type: negative_sampling
-      bounds: [ 1, 1000 ]                       #train_type: negative_sampling
+      bounds: [ 1, 500 ]                       #train_type: negative_sampling
       log_scale: True                         #train_type: negative_sampling
     # model-specific entries
     - name: rgcn.decoder.model
@@ -170,11 +170,11 @@ ax_search:
       values: ['bases', 'block']
     - name: rgcn_embedder.num_bases_or_blocks
       type: choice
-      values: [2, 4, 8]
+      values: [2, 4]
       is_ordered: True
     - name: rgcn_embedder.num_layers
       type: choice
-      values: [1, 2, 3]
+      values: [1, 2]
       is_ordered: True
     - name: rgcn_embedder.use_normalization
       type: choice
