@@ -5,9 +5,9 @@ model: rgcn
 
 train:
   type: negative_sampling
-  batch_size: 256
+  batch_size: 512
   loss: kl
-  max_epochs: 100
+  max_epochs: 500
   optimizer.default:
     type: Adam
     args:
