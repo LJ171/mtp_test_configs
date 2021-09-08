@@ -1,0 +1,40 @@
+job.type: train
+dataset.name: fb15k-237
+
+model: rgcn
+
+train:
+  type: negative_sampling
+  batch_size: 256
+  loss: kl
+  max_epochs: 100
+  optimizer.default:
+    type: Adam
+    args:
+      lr: 0.01
+
+valid:
+  early_stopping.patience: 5
+  every: 5
+  metric: mean_reciprocal_rank_filtered_with_test
+
+eval:
+  batch_size: 256
+
+negative_sampling:
+  num_samples.s: 1  # default: p=0; o=s
+  sampling_type: uniform
+  implementation: triple
+
+rgcn_embedder:
+  num_layers: 2
+  decomposition: blocks
+  num_bases_or_blocks: 5
+
+lookup_embedder.dim: 500
+
+rgcn:
+  decoder:
+    model: distmult
+    scorer: DistMultScorer
+
