@@ -1,0 +1,41 @@
+job.type: train
+job.device: 'cpu'
+dataset.name: nations
+
+model: rgcn
+
+train:
+  type: negative_sampling
+  batch_size: 256
+  loss: kl
+  max_epochs: 20
+  optimizer.default:
+    type: Adam
+    args:
+      lr: 0.01
+
+valid:
+  early_stopping.patience: 5
+  every: 5
+  metric: mean_reciprocal_rank_filtered_with_test
+
+eval:
+  batch_size: 256
+
+negative_sampling:
+  num_samples.s: 3  # default: p=0; o=s
+  sampling_type: uniform
+  implementation: triple
+
+rgcn_embedder:
+  num_layers: 1
+  decomposition: bases
+  num_bases_or_blocks: 4
+
+lookup_embedder.dim: 256
+
+rgcn:
+  decoder:
+    model: distmult
+    scorer: DistMultScorer
+
